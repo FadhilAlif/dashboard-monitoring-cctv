@@ -6,55 +6,55 @@
 @endsection
 
 @section('content')
-<div class="container px-4 py-8 mx-auto">
+<div class="max-w-6xl px-4 py-8 mx-auto">
     <div class="flex items-center justify-between mb-8">
         <div class="flex items-center gap-4">
-            <a href="{{ route('dashboard') }}" class="text-blue-600 hover:text-blue-800">
+            <a href="{{ route('dashboard') }}" class="text-[#B03A4B] hover:text-[#a02f3e] transition">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                 </svg>
             </a>
-            <h1 class="text-3xl font-bold text-gray-800">Manage CCTV</h1>
+            <h1 class="text-3xl font-extrabold text-[#B03A4B] tracking-tight">MANAGE CCTV</h1>
         </div>
-        <button onclick="openCreateModal()" class="px-4 py-2 text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700">
-            <svg class="inline w-5 h-5 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <button onclick="openCreateModal()" class="flex items-center gap-2 px-5 py-2 text-sm font-semibold text-white bg-[#B03A4B] hover:bg-[#a02f3e] rounded-lg shadow transition">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
             </svg>
             Tambah CCTV
         </button>
     </div>
 
-    <div class="overflow-hidden bg-white rounded-lg shadow">
+    <div class="overflow-hidden bg-white border border-gray-200 shadow rounded-2xl">
         <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
+            <table class="min-w-full divide-y divide-gray-200" id="cctvTable">
+                <thead class="bg-[#B03A4B]/10">
                     <tr>
-                        <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Nama</th>
-                        <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Latitude</th>
-                        <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Longitude</th>
-                        <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Stream URL</th>
-                        <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Aksi</th>
+                        <th class="px-6 py-3 text-xs font-bold tracking-wider text-left text-[#B03A4B] uppercase">Nama</th>
+                        <th class="px-6 py-3 text-xs font-bold tracking-wider text-left text-[#B03A4B] uppercase">Latitude</th>
+                        <th class="px-6 py-3 text-xs font-bold tracking-wider text-left text-[#B03A4B] uppercase">Longitude</th>
+                        <th class="px-6 py-3 text-xs font-bold tracking-wider text-left text-[#B03A4B] uppercase">Stream URL</th>
+                        <th class="px-6 py-3 text-xs font-bold tracking-wider text-left text-[#B03A4B] uppercase">Aksi</th>
                     </tr>
                 </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
+                <tbody class="bg-white divide-y divide-gray-100" id="cctvTableBody">
                     @forelse($cctvs as $cctv)
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">{{ $cctv->name }}</td>
-                        <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">{{ $cctv->lat }}</td>
-                        <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">{{ $cctv->lng }}</td>
-                        <td class="px-6 py-4 text-sm text-gray-500">
+                    <tr id="cctv-row-{{ $cctv->id }}" class="hover:bg-[#B03A4B]/5 transition">
+                        <td class="px-6 py-4 text-sm font-semibold text-gray-900 whitespace-nowrap">{{ $cctv->name }}</td>
+                        <td class="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">{{ $cctv->lat }}</td>
+                        <td class="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">{{ $cctv->lng }}</td>
+                        <td class="px-6 py-4 text-sm text-gray-700">
                             <div class="max-w-xs truncate" title="{{ $cctv->stream_url }}">
                                 {{ $cctv->stream_url }}
                             </div>
                         </td>
-                        <td class="px-6 py-4 text-sm font-medium whitespace-nowrap">
-                            <button onclick="openEditModal({{ $cctv->id }}, '{{ $cctv->name }}', {{ $cctv->lat }}, {{ $cctv->lng }}, '{{ $cctv->stream_url }}')" 
-                                    class="mr-3 text-indigo-600 hover:text-indigo-900">
+                        <td class="flex gap-2 px-6 py-4 text-sm font-medium whitespace-nowrap">
+                            <button onclick="openEditModal({{ $cctv->id }}, '{{ addslashes($cctv->name) }}', {{ $cctv->lat }}, {{ $cctv->lng }}, '{{ addslashes($cctv->stream_url) }}')" 
+                                    class="p-2 rounded hover:bg-[#B03A4B]/10 text-[#B03A4B] transition" title="Edit">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                 </svg>
                             </button>
-                            <button onclick="deleteCctv({{ $cctv->id }})" class="text-red-600 hover:text-red-900">
+                            <button onclick="deleteCctv({{ $cctv->id }})" class="p-2 text-red-600 transition rounded hover:bg-red-100" title="Hapus">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                 </svg>
@@ -62,7 +62,7 @@
                         </td>
                     </tr>
                     @empty
-                    <tr>
+                    <tr id="empty-row">
                         <td colspan="5" class="px-6 py-4 text-center text-gray-500">Tidak ada data CCTV</td>
                     </tr>
                     @endforelse
@@ -112,19 +112,49 @@ function closeModal() {
     document.getElementById('cctvModal').classList.add('hidden');
 }
 
+function renderRow(cctv) {
+    return `
+    <tr id="cctv-row-${cctv.id}" class="hover:bg-[#B03A4B]/5 transition">
+        <td class="px-6 py-4 text-sm font-semibold text-gray-900 whitespace-nowrap">${cctv.name}</td>
+        <td class="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">${cctv.lat}</td>
+        <td class="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">${cctv.lng}</td>
+        <td class="px-6 py-4 text-sm text-gray-700">
+            <div class="max-w-xs truncate" title="${cctv.stream_url}">
+                ${cctv.stream_url}
+            </div>
+        </td>
+        <td class="flex gap-2 px-6 py-4 text-sm font-medium whitespace-nowrap">
+            <button onclick="openEditModal(${cctv.id}, '${escapeHtml(cctv.name)}', ${cctv.lat}, ${cctv.lng}, '${escapeHtml(cctv.stream_url)}')" 
+                    class="p-2 rounded hover:bg-[#B03A4B]/10 text-[#B03A4B] transition" title="Edit">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                </svg>
+            </button>
+            <button onclick="deleteCctv(${cctv.id})" class="p-2 text-red-600 transition rounded hover:bg-red-100" title="Hapus">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+            </button>
+        </td>
+    </tr>
+    `;
+}
+
+function escapeHtml(text) {
+    return text.replace(/'/g, '&#39;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
 document.getElementById('cctvForm').addEventListener('submit', function(e) {
     e.preventDefault();
     
     const formData = new FormData(this);
     const data = Object.fromEntries(formData);
-    
     const url = isEditMode ? `/cctv/${data.id}` : '/cctv';
     const method = isEditMode ? 'POST' : 'POST';
-    
     if (isEditMode) {
         data._method = 'PUT';
     }
-    
+
     fetch(url, {
         method: method,
         headers: {
@@ -137,8 +167,19 @@ document.getElementById('cctvForm').addEventListener('submit', function(e) {
     .then(result => {
         if (result.success) {
             closeModal();
-            showToast(isEditMode ? 'CCTV berhasil diupdate' : 'CCTV berhasil ditambahkan', 'success');
-            setTimeout(() => location.reload(), 1200);
+            if (isEditMode) {
+                // Update row
+                const row = document.getElementById('cctv-row-' + result.data.id);
+                if (row) row.outerHTML = renderRow(result.data);
+                showToast('CCTV berhasil diupdate', 'success');
+            } else {
+                // Remove empty row if exists
+                const emptyRow = document.getElementById('empty-row');
+                if (emptyRow) emptyRow.remove();
+                // Add new row
+                document.getElementById('cctvTableBody').insertAdjacentHTML('beforeend', renderRow(result.data));
+                showToast('CCTV berhasil ditambahkan', 'success');
+            }
         } else {
             showToast('Terjadi kesalahan: ' + result.message, 'error');
         }
@@ -160,8 +201,14 @@ function deleteCctv(id) {
         .then(response => response.json())
         .then(result => {
             if (result.success) {
+                // Remove row
+                const row = document.getElementById('cctv-row-' + id);
+                if (row) row.remove();
+                // If table is empty, show empty row
+                if (!document.querySelector('#cctvTableBody tr')) {
+                    document.getElementById('cctvTableBody').innerHTML = `<tr id="empty-row"><td colspan="5" class="px-6 py-4 text-center text-gray-500">Tidak ada data CCTV</td></tr>`;
+                }
                 showToast('CCTV berhasil dihapus', 'success');
-                setTimeout(() => location.reload(), 1200);
             } else {
                 showToast('Terjadi kesalahan: ' + result.message, 'error');
             }
