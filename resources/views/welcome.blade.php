@@ -16,7 +16,7 @@
         <nav class="sticky top-0 z-50 bg-white shadow-sm">
             <div class="flex items-center justify-between px-4 py-3 mx-auto max-w-7xl">
                 <div class="flex items-center gap-2">
-                    <img src="{{ asset('assets/logo-lifemedia.png') }}" alt="Life Media" class="w-auto h-8">
+                    <img src="{{ asset('assets/logo-lifemedia.png') }}" alt="Life Media" class="w-auto h-8 hover:cursor-pointer" onclick="window.location.href='{{ url('/') }}'">
                 </div>
                 <div class="flex items-center gap-6">
                     <a href="{{ url('/') }}" class="text-sm font-semibold text-gray-700 hover:text-red-600">HOME</a>
