@@ -22,13 +22,13 @@
                 
                 <div class="mb-4">
                     <label for="lat" class="block mb-2 text-sm font-medium text-gray-700">Latitude</label>
-                    <input type="number" id="lat" name="lat" step="any" required 
+                    <input type="number" id="lat" name="lat" step="any" required min="-90" max="90"
                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
                 
                 <div class="mb-4">
                     <label for="lng" class="block mb-2 text-sm font-medium text-gray-700">Longitude</label>
-                    <input type="number" id="lng" name="lng" step="any" required 
+                    <input type="number" id="lng" name="lng" step="any" required min="-180" max="180"
                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
                 
@@ -51,4 +51,4 @@
             </form>
         </div>
     </div>
-</div> 
+</div>

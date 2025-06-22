@@ -1,5 +1,10 @@
 @extends('layouts.app')
 
+@section('head')
+    <!-- Toastify CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+@endsection
+
 @section('content')
 <div class="container px-4 py-8 mx-auto">
     <div class="flex items-center justify-between mb-8">
@@ -69,8 +74,20 @@
 
 @include('cctv.modal')
 
+<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 <script>
 let isEditMode = false;
+
+function showToast(message, type = 'success') {
+    Toastify({
+        text: message,
+        duration: 3000,
+        gravity: "top",
+        position: "right",
+        backgroundColor: type === 'success' ? "#22c55e" : "#ef4444",
+        stopOnFocus: true,
+    }).showToast();
+}
 
 function openCreateModal() {
     isEditMode = false;
@@ -104,7 +121,6 @@ document.getElementById('cctvForm').addEventListener('submit', function(e) {
     const url = isEditMode ? `/cctv/${data.id}` : '/cctv';
     const method = isEditMode ? 'POST' : 'POST';
     
-    // Tambahkan _method untuk PUT request
     if (isEditMode) {
         data._method = 'PUT';
     }
@@ -121,14 +137,15 @@ document.getElementById('cctvForm').addEventListener('submit', function(e) {
     .then(result => {
         if (result.success) {
             closeModal();
-            location.reload();
+            showToast(isEditMode ? 'CCTV berhasil diupdate' : 'CCTV berhasil ditambahkan', 'success');
+            setTimeout(() => location.reload(), 1200);
         } else {
-            alert('Terjadi kesalahan: ' + result.message);
+            showToast('Terjadi kesalahan: ' + result.message, 'error');
         }
     })
     .catch(error => {
         console.error('Error:', error);
-        alert('Terjadi kesalahan saat menyimpan data');
+        showToast('Terjadi kesalahan saat menyimpan data', 'error');
     });
 });
 
@@ -143,16 +160,17 @@ function deleteCctv(id) {
         .then(response => response.json())
         .then(result => {
             if (result.success) {
-                location.reload();
+                showToast('CCTV berhasil dihapus', 'success');
+                setTimeout(() => location.reload(), 1200);
             } else {
-                alert('Terjadi kesalahan: ' + result.message);
+                showToast('Terjadi kesalahan: ' + result.message, 'error');
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('Terjadi kesalahan saat menghapus data');
+            showToast('Terjadi kesalahan saat menghapus data', 'error');
         });
     }
 }
 </script>
-@endsection 
+@endsection

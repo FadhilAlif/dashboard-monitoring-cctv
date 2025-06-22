@@ -22,20 +22,27 @@ class CctvController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'lat' => 'required|numeric',
-            'lng' => 'required|numeric',
+            'lat' => 'required|numeric|between:-90,90',
+            'lng' => 'required|numeric|between:-180,180',
             'stream_url' => 'required|url'
         ]);
 
-        $cctv = Cctv::create($request->all());
+        try {
+            $cctv = Cctv::create($validated);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'CCTV berhasil ditambahkan',
-            'data' => $cctv
-        ]);
+            return response()->json([
+                'success' => true,
+                'message' => 'CCTV berhasil ditambahkan',
+                'data' => $cctv
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal menyimpan data: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
@@ -43,16 +50,16 @@ class CctvController extends Controller
      */
     public function update(Request $request, Cctv $cctv): JsonResponse
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'lat' => 'required|numeric',
-            'lng' => 'required|numeric',
+            'lat' => 'required|numeric|between:-90,90',
+            'lng' => 'required|numeric|between:-180,180',
             'stream_url' => 'required|url'
         ]);
 
         // Hapus _method dari data yang akan diupdate
         $data = $request->except(['_method']);
-        $cctv->update($data);
+        $cctv->update($validated);
 
         return response()->json([
             'success' => true,
@@ -73,4 +80,4 @@ class CctvController extends Controller
             'message' => 'CCTV berhasil dihapus'
         ]);
     }
-} 
+}
