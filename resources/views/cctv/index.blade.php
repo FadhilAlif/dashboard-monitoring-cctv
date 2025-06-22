@@ -74,18 +74,34 @@
 
 @include('cctv.modal')
 
+<!-- Modal Konfirmasi Delete -->
+<div id="deleteModal" class="fixed inset-0 z-50 hidden bg-black/40">
+    <div class="flex items-center justify-center min-h-screen p-4">
+        <div class="w-full max-w-xs bg-white rounded-2xl shadow-2xl border border-[#B03A4B]/30 p-6 text-center">
+            <div class="mb-4 text-xl font-bold text-[#B03A4B]">Konfirmasi Hapus</div>
+            <div class="mb-6 text-gray-700">Apakah Anda yakin ingin menghapus CCTV ini?</div>
+            <div class="flex justify-center gap-3">
+                <button type="button" onclick="closeDeleteModal()" class="px-4 py-2 text-[#B03A4B] font-semibold bg-gray-100 rounded-md hover:bg-gray-200 border border-[#B03A4B]/20 transition">Batal</button>
+                <button type="button" id="confirmDeleteBtn" class="px-4 py-2 text-white font-semibold bg-[#B03A4B] rounded-md hover:bg-[#a02f3e] shadow transition">Hapus</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 <script>
 let isEditMode = false;
+let deleteCctvId = null;
 
 function showToast(message, type = 'success') {
     Toastify({
         text: message,
-        duration: 3000,
+        duration: 1500,
         gravity: "top",
         position: "right",
         backgroundColor: type === 'success' ? "#22c55e" : "#ef4444",
         stopOnFocus: true,
+        close: true
     }).showToast();
 }
 
@@ -191,33 +207,51 @@ document.getElementById('cctvForm').addEventListener('submit', function(e) {
 });
 
 function deleteCctv(id) {
-    if (confirm('Apakah Anda yakin ingin menghapus CCTV ini?')) {
-        fetch(`/cctv/${id}`, {
-            method: 'DELETE',
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            }
-        })
-        .then(response => response.json())
-        .then(result => {
-            if (result.success) {
-                // Remove row
-                const row = document.getElementById('cctv-row-' + id);
-                if (row) row.remove();
-                // If table is empty, show empty row
-                if (!document.querySelector('#cctvTableBody tr')) {
-                    document.getElementById('cctvTableBody').innerHTML = `<tr id="empty-row"><td colspan="5" class="px-6 py-4 text-center text-gray-500">Tidak ada data CCTV</td></tr>`;
-                }
-                showToast('CCTV berhasil dihapus', 'success');
-            } else {
-                showToast('Terjadi kesalahan: ' + result.message, 'error');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            showToast('Terjadi kesalahan saat menghapus data', 'error');
-        });
-    }
+    deleteCctvId = id;
+    document.getElementById('deleteModal').classList.remove('hidden');
 }
+
+function closeDeleteModal() {
+    deleteCctvId = null;
+    document.getElementById('deleteModal').classList.add('hidden');
+}
+
+document.getElementById('confirmDeleteBtn').onclick = function() {
+    if (!deleteCctvId) return;
+    fetch(`/cctv/${deleteCctvId}`, {
+        method: 'DELETE',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        }
+    })
+    .then(response => response.json())
+    .then(result => {
+        closeDeleteModal();
+        if (result.success) {
+            // Remove row
+            const row = document.getElementById('cctv-row-' + deleteCctvId);
+            if (row) row.remove();
+            // If table is empty, show empty row
+            if (!document.querySelector('#cctvTableBody tr')) {
+                document.getElementById('cctvTableBody').innerHTML = `<tr id="empty-row"><td colspan="5" class="px-6 py-4 text-center text-gray-500">Tidak ada data CCTV</td></tr>`;
+            }
+            showToast('CCTV berhasil dihapus', 'success');
+        } else {
+            showToast('Terjadi kesalahan: ' + result.message, 'error');
+        }
+        deleteCctvId = null;
+    })
+    .catch(error => {
+        closeDeleteModal();
+        console.error('Error:', error);
+        showToast('Terjadi kesalahan saat menghapus data', 'error');
+        deleteCctvId = null;
+    });
+};
+
+// Optional: close modal if click outside
+document.getElementById('deleteModal').addEventListener('click', function(e) {
+    if (e.target === this) closeDeleteModal();
+});
 </script>
 @endsection
