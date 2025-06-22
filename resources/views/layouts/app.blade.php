@@ -25,7 +25,7 @@
         </div>
     </nav>
     <!-- Main content -->
-    <main class="p-4 mx-auto max-w-7xl">
+    <main class="p-4 max-w-[90rem] mx-auto">
         @yield('content')
     </main>
     @yield('scripts')

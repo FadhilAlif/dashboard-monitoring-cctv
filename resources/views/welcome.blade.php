@@ -95,7 +95,7 @@
 
         <!-- Footer -->
         <footer class="pt-8 pb-4 bg-white">
-            <div class="max-w-6xl px-4 mx-auto">
+            <div class="p-4 max-w-[90rem] mx-auto">
                 <div class="mb-2 text-lg font-bold text-black">INFORMATION</div>
                 <div class="flex flex-col gap-8 text-sm text-black md:flex-row md:justify-between">
                     <!-- Kantor Cabang -->

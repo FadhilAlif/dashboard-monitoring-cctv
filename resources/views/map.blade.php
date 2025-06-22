@@ -2,19 +2,21 @@
 
 @section('head')
     <style>
-        #map { height: 6vh; min-height: 350px; }
+        #map { 
+            height: calc(100vh - 180px); /* 160px = estimasi header+judul+footer, sesuaikan jika perlu */
+            min-height: 350px; 
+            border-radius: 1rem; 
+        }
+        .leaflet-popup-content { min-width: 260px; }
     </style>
 @endsection
 
 @section('content')
-    <div class="flex flex-col gap-2 mb-8 sm:flex-row sm:items-center sm:justify-between">
-        <h1 class="flex items-center gap-2 text-3xl font-bold text-blue-700">
-            <svg class="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A2 2 0 0122 9.618v4.764a2 2 0 01-2.447 1.894L15 14M4 6v12a2 2 0 002 2h8a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2z" /></svg>
-            Peta CCTV Jogja
-        </h1>
-        <span class="text-sm text-gray-500">Klik marker untuk melihat streaming</span>
+    <div class="mb-4">
+        <h1 class="text-4xl font-extrabold text-[#B03A4B] mb-1 tracking-tight">PETA CCTV JOGJA</h1>
+        <div class="mb-4 text-base font-medium tracking-wide text-black">PLATFROM CCTV DAERAH ISTIMEWA YOGYAKARTA</div>
     </div>
-    <div class="overflow-hidden bg-white border border-blue-200 shadow-lg rounded-2xl">
+    <div class="p-2 overflow-hidden bg-white border border-blue-200 shadow-lg rounded-2xl">
         <div id="map" class="w-full"></div>
     </div>
 @endsection
@@ -31,14 +33,20 @@
             const cctvs = @json($cctvs);
 
             cctvs.forEach(cctv => {
-                const marker = L.marker([cctv.lat, cctv.lng]).addTo(map);
-                marker.bindPopup(`
+                const popupContent = `
                     <div class='text-sm text-gray-800'>
-                        <strong>${cctv.name}</strong><br>
-                        <iframe src="${cctv.stream_url}" width="250" height="140" class="rounded" frameborder="0" allowfullscreen></iframe>
+                        <div class="font-bold text-[#B03A4B] mb-1">${cctv.name}</div>
+                        ${cctv.location ? `<div class="mb-2 text-xs text-gray-500"><i class="fa fa-map-marker-alt"></i> ${cctv.location}</div>` : ''}
+                        <div class="mb-1 overflow-hidden border border-gray-200 rounded">
+                            <iframe src="${cctv.stream_url}" width="250" height="140" class="rounded" frameborder="0" allowfullscreen></iframe>
+                        </div>
                     </div>
-                `);
+                `;
+                const marker = L.marker([cctv.lat, cctv.lng]).addTo(map);
+                marker.bindPopup(popupContent);
             });
         });
     </script>
+    <!-- Optional: FontAwesome for location icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
 @endsection
