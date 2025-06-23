@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>CCTV Jogja - Platform Monitoring Realtime</title>
+    <link rel="icon" type="image/png" href="{{ asset('assets/lifemedia.png') }}"/>
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
@@ -134,7 +135,7 @@
                     <div class="flex-1 min-w-[120px]">
                         <div class="mb-1 font-semibold">Media Sosial</div>
                         <div class="flex gap-2 mt-1">
-                            <a href="#" class="inline-block"><img src="{{ asset('assets/instagram-logo.png') }}" alt="Instagram" class="w-6 h-6"></a>
+                            <a href="" class="inline-block"><img src="{{ asset('assets/instagram-logo.png') }}" alt="Instagram" class="w-6 h-6"></a>
                             <a href="#" class="inline-block"><img src="{{ asset('assets/fb-logo.png') }}" alt="Facebook" class="w-6 h-6"></a>
                             <a href="#" class="inline-block"><img src="{{ asset('assets/tiktok-logo.png') }}" alt="TikTok" class="w-6 h-6"></a>
                         </div>
