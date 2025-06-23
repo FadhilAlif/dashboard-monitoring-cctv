@@ -99,7 +99,4 @@ POST /cctv
 
 -   Pastikan file asset (logo, gambar, dsb) ada di `public/assets/`.
 -   Untuk streaming CCTV, gunakan URL yang mendukung embed/iframe.
--   Fitur CRUD hanya dapat diakses oleh user yang memiliki akses (tambahkan auth jika diperlukan).
-
-**Copyright**
-&copy; {{ date('Y') }} Life Media - Dashboard CCTV Yogyakarta
+-   Perhatikan format saat mengisi langtitude dan latitude 
